@@ -1,0 +1,16 @@
+{
+	"name": "wh-todo",
+	"version": "1.0.0",
+	"repository": "https://github.com/wayheming/wh-todo",
+	"author": "Ernest Beginov https://github.com/wayheming",
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {
+		"gulp": "^4.0.2",
+		"gulp-minify": "^3.1.0",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^5.1.0",
+		"sass": "^1.52.3"
+	},
+	"scripts": {}
+}
