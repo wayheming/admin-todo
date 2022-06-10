@@ -43,7 +43,7 @@ final class Plugin {
 
 		wp_localize_script(
 			'wh-admin-scripts',
-			'wh_config',
+			'whConfig',
 			[
 				'adminAjaxUrl' => admin_url( 'admin-ajax.php' ),
 				'todoNonce'    => wp_create_nonce( 'wh_todo_nonce' ),

@@ -1,141 +1,141 @@
-/* global wh_config */
+/* global whConfig, jQuery */
 
-(function($) {
+( function( $ ) {
 	// Helpers.
-	let $noticesArea = $('.wh-notices-area');
-	let $todoInner = $('.wh-todo-inner');
+	const $noticesArea = $( '.wh-notices-area' );
+	const $todoInner = $( '.wh-todo-inner' );
 
-	function printNotice(type, text) {
-		$noticesArea.append('<div class="wh-notice wh-' + type + '">' + text + '</div>');
+	function printNotice( type, text ) {
+		$noticesArea.append( '<div class="wh-notice wh-' + type + '">' + text + '</div>' );
 	}
 
 	function clearNotices() {
-		$noticesArea.text('');
+		$noticesArea.text( '' );
 	}
 
 	// Create,
-	$('.wh-todo-create').on('click', function(event) {
+	$( '.wh-todo-create' ).on( 'click', function( event ) {
 		event.preventDefault();
 
-		$.ajax({
-			type   : 'POST',
-			url    : wh_config.adminAjaxUrl,
-			data   : {
-				action    : 'wh_todo_create',
-				todo_nonce: wh_config.todoNonce
+		$.ajax( {
+			type: 'POST',
+			url: whConfig.adminAjaxUrl,
+			data: {
+				action: 'wh_todo_create',
+				todo_nonce: whConfig.todoNonce,
 			},
-			success: (response) => {
-				if (response.success && response.data.updated) {
-					$('.wh-todo-item-example').clone().appendTo('.wh-todo-items').removeClass('wh-todo-item-example wh-hidden').addClass('wh-todo-item wh-status-actual').data('id', response.data.id).attr('data-id', response.data.id);
+			success: ( response ) => {
+				if ( response.success && response.data.updated ) {
+					$( '.wh-todo-item-example' ).clone().appendTo( '.wh-todo-items' ).removeClass( 'wh-todo-item-example wh-hidden' ).addClass( 'wh-todo-item wh-status-actual' ).data( 'id', response.data.id ).attr( 'data-id', response.data.id );
 
 					findItems();
 				}
 			},
-			error  : (response) => {
-				printNotice('error', response.responseJSON.data);
-			}
-		});
-	});
+			error: ( response ) => {
+				printNotice( 'error', response.responseJSON.data );
+			},
+		} );
+	} );
 
 	findItems();
 
 	function findItems() {
-		$('.wh-todo-item').each(function() {
-			let $item = $(this);
-			let id = $item.data('id');
+		$( '.wh-todo-item' ).each( function() {
+			const $item = $( this );
+			const id = $item.data( 'id' );
 
 			// Change status.
-			$item.find('.wh-todo-done').on('click', function(event) {
+			$item.find( '.wh-todo-done' ).on( 'click', function( event ) {
 				event.preventDefault();
 
-				let status = $(this).data('status');
+				const status = $( this ).data( 'status' );
 
-				$todoInner.addClass('wh-loading');
+				$todoInner.addClass( 'wh-loading' );
 				clearNotices();
 
-				$.ajax({
-					type   : 'POST',
-					url    : wh_config.adminAjaxUrl,
-					data   : {
-						action    : 'wh_todo_change_status',
-						status    : status,
-						id        : id,
-						todo_nonce: wh_config.todoNonce
+				$.ajax( {
+					type: 'POST',
+					url: whConfig.adminAjaxUrl,
+					data: {
+						action: 'wh_todo_change_status',
+						status,
+						id,
+						todo_nonce: whConfig.todoNonce,
 					},
-					success: (response) => {
-						if (response.success && response.data.updated) {
-							$todoInner.removeClass('wh-loading');
+					success: ( response ) => {
+						if ( response.success && response.data.updated ) {
+							$todoInner.removeClass( 'wh-loading' );
 
-							if (status === 'actual') {
-								$item.removeClass('wh-status-done').addClass('wh-status-actual');
-								$item.find('input').prop('disabled', false);
+							if ( status === 'actual' ) {
+								$item.removeClass( 'wh-status-done' ).addClass( 'wh-status-actual' );
+								$item.find( 'input' ).prop( 'disabled', false );
 							} else {
-								$item.removeClass('wh-status-actual').addClass('wh-status-done');
-								$item.find('input').prop('disabled', true);
+								$item.removeClass( 'wh-status-actual' ).addClass( 'wh-status-done' );
+								$item.find( 'input' ).prop( 'disabled', true );
 							}
 						}
 					},
-					error  : (response) => {
-						printNotice('error', response.responseJSON.data);
-					}
-				});
-			});
+					error: ( response ) => {
+						printNotice( 'error', response.responseJSON.data );
+					},
+				} );
+			} );
 
 			// Delete.
-			$item.find('.wh-todo-delete').on('click', function(event) {
+			$item.find( '.wh-todo-delete' ).on( 'click', function( event ) {
 				event.preventDefault();
 
-				$todoInner.addClass('wh-loading');
+				$todoInner.addClass( 'wh-loading' );
 				clearNotices();
 
-				$.ajax({
-					type   : 'POST',
-					url    : wh_config.adminAjaxUrl,
-					data   : {
-						action    : 'wh_todo_delete',
-						id        : id,
-						todo_nonce: wh_config.todoNonce
+				$.ajax( {
+					type: 'POST',
+					url: whConfig.adminAjaxUrl,
+					data: {
+						action: 'wh_todo_delete',
+						id,
+						todo_nonce: whConfig.todoNonce,
 					},
-					success: (response) => {
-						if (response.success && response.data.updated) {
+					success: ( response ) => {
+						if ( response.success && response.data.updated ) {
 							$item.remove();
-							$todoInner.removeClass('wh-loading');
+							$todoInner.removeClass( 'wh-loading' );
 						}
 					},
-					error  : (response) => {
-						printNotice('error', response.responseJSON.data);
-					}
-				});
-			});
+					error: ( response ) => {
+						printNotice( 'error', response.responseJSON.data );
+					},
+				} );
+			} );
 
 			// Update.
-			$item.find('input').on('keyup', function(event) {
+			$item.find( 'input' ).on( 'keyup', function( event ) {
 				event.preventDefault();
 
-				let text = $(this).val();
+				const text = $( this ).val();
 
-				$todoInner.addClass('wh-loading');
+				$todoInner.addClass( 'wh-loading' );
 				clearNotices();
 
-				$.ajax({
-					type   : 'POST',
-					url    : wh_config.adminAjaxUrl,
-					data   : {
-						action    : 'wh_todo_update',
-						id        : id,
-						text      : text,
-						todo_nonce: wh_config.todoNonce
+				$.ajax( {
+					type: 'POST',
+					url: whConfig.adminAjaxUrl,
+					data: {
+						action: 'wh_todo_update',
+						id,
+						text,
+						todo_nonce: whConfig.todoNonce,
 					},
-					success: (response) => {
-						if (response.success && response.data.updated) {
-							$todoInner.removeClass('wh-loading');
+					success: ( response ) => {
+						if ( response.success && response.data.updated ) {
+							$todoInner.removeClass( 'wh-loading' );
 						}
 					},
-					error  : (response) => {
-						printNotice('error', response.responseJSON.data);
-					}
-				});
-			});
-		});
+					error: ( response ) => {
+						printNotice( 'error', response.responseJSON.data );
+					},
+				} );
+			} );
+		} );
 	}
-})(jQuery);
+}( jQuery ) );
