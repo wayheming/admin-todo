@@ -17,6 +17,8 @@
 	$( '.wh-todo-create' ).on( 'click', function( event ) {
 		event.preventDefault();
 
+		$todoInner.addClass( 'wh-loading' );
+
 		$.ajax( {
 			type: 'POST',
 			url: whConfig.adminAjaxUrl,
@@ -26,6 +28,8 @@
 			},
 			success: ( response ) => {
 				if ( response.success && response.data.updated ) {
+					$todoInner.removeClass( 'wh-loading' );
+
 					$( '.wh-todo-item-example' ).clone().appendTo( '.wh-todo-items' ).removeClass( 'wh-todo-item-example wh-hidden' ).addClass( 'wh-todo-item wh-status-actual' ).data( 'id', response.data.id ).attr( 'data-id', response.data.id );
 
 					findItems();
