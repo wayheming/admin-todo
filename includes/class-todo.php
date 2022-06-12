@@ -8,18 +8,25 @@ class Todo {
 	use Trait_Singleton;
 
 	/**
-	 * Option data name;
-	 *
-	 * @var string
-	 */
-	private $option_name;
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->option_name = 'wh_data_' . get_current_user_id();
+		$this->hooks();
+	}
 
+	/**
+	 * Get data option name.
+	 *
+	 * @return string
+	 */
+	public function get_option_name() {
+		return 'wh_data_' . get_current_user_id();
+	}
+
+	/**
+	 * Hooks.
+	 */
+	public function hooks() {
 		add_action( 'wp_ajax_wh_todo_create', [ $this, 'create' ] );
 		add_action( 'wp_ajax_wh_todo_delete', [ $this, 'delete' ] );
 		add_action( 'wp_ajax_wh_todo_update', [ $this, 'update' ] );
@@ -33,7 +40,7 @@ class Todo {
 	public function create() {
 		check_ajax_referer( 'wh_todo_nonce', 'todo_nonce' );
 
-		$todo_data = get_option( $this->option_name );
+		$todo_data = get_option( $this->get_option_name() );
 
 		$id = array_key_last( $todo_data ) + 1;
 
@@ -42,7 +49,7 @@ class Todo {
 			'status' => 'actual',
 		];
 
-		$updated = update_option( $this->option_name, $todo_data );
+		$updated = update_option( $this->get_option_name(), $todo_data );
 
 		wp_send_json_success(
 			[
@@ -60,15 +67,16 @@ class Todo {
 
 		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( esc_html__( 'Missing todo ID.', 'wh-todo' ), 400 );
+			return;
 		}
 
 		$id = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 
-		$todo_data = get_option( $this->option_name );
+		$todo_data = get_option( $this->get_option_name() );
 
 		unset( $todo_data[ $id ] );
 
-		$updated = update_option( $this->option_name, $todo_data );
+		$updated = update_option( $this->get_option_name(), $todo_data );
 
 		wp_send_json_success(
 			[
@@ -85,6 +93,7 @@ class Todo {
 
 		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( esc_html__( 'Missing todo ID.', 'wh-todo' ), 400 );
+			return;
 		}
 
 		$text = '';
@@ -95,11 +104,11 @@ class Todo {
 
 		$id = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 
-		$todo_data = get_option( $this->option_name );
+		$todo_data = get_option( $this->get_option_name() );
 
 		$todo_data[ $id ]['text'] = $text;
 
-		$updated = update_option( $this->option_name, $todo_data );
+		$updated = update_option( $this->get_option_name(), $todo_data );
 
 		wp_send_json_success(
 			[
@@ -116,20 +125,22 @@ class Todo {
 
 		if ( empty( $_POST['id'] ) ) {
 			wp_send_json_error( esc_html__( 'Missing todo ID.', 'wh-todo' ), 400 );
+			return;
 		}
 
 		if ( empty( $_POST['status'] ) ) {
 			wp_send_json_error( esc_html__( 'Missing todo status.', 'wh-todo' ), 400 );
+			return;
 		}
 
 		$id     = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 		$status = sanitize_text_field( wp_unslash( $_POST['status'] ) );
 
-		$todo_data = get_option( $this->option_name );
+		$todo_data = get_option( $this->get_option_name() );
 
 		$todo_data[ $id ]['status'] = $status;
 
-		$updated = update_option( $this->option_name, $todo_data );
+		$updated = update_option( $this->get_option_name(), $todo_data );
 
 		wp_send_json_success(
 			[
@@ -142,7 +153,7 @@ class Todo {
 	 * Render todo list.
 	 */
 	public function render_list() {
-		$todo_data = get_option( $this->option_name, [] );
+		$todo_data = get_option( $this->get_option_name(), [] );
 
 		?>
 		<div class="wh-todo-list">

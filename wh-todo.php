@@ -25,6 +25,6 @@ define( 'WH_TODO_URL', plugin_dir_url( __FILE__ ) );
  */
 define( 'WH_TODO_VERSION', '0.0.1' );
 
-require_once WH_TODO_PATH . 'class-autoload.php';
+require_once WH_TODO_PATH . 'vendor/autoload.php';
 
 WHTodo\Includes\Plugin::get_instance();
