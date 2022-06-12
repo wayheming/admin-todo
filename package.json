@@ -19,6 +19,7 @@
 	"scripts": {
 		"build": "gulp build",
 		"eslint": "eslint assets/js/scripts.js --fix",
-		"stylelint": "stylelint assets/sass/styles.scss --fix"
+		"stylelint": "stylelint assets/sass/styles.scss --fix",
+		"cypress": "./node_modules/.bin/cypress open"
 	}
 }
