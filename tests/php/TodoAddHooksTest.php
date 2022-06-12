@@ -11,8 +11,6 @@ final class TodoAddHooksTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 		WP_Mock::setUp();
-
-		WP_Mock::userFunction( 'get_current_user_id', 2 );
 	}
 
 	public function tearDown(): void {

@@ -4,7 +4,7 @@
 - [x] PHPCS
 - [x] ESLint
 - [x] Styles Lint (scss)
-- [ ] PHPUnit tests
+- [x] PHPUnit tests
 - [ ] e2e cypress tests
 - [ ] Code refactor
 

@@ -25,7 +25,7 @@ final class TodoChangeStatusTest extends TestCase {
 	public function test_success_change_status() {
 		$todo = new Todo();
 
-		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
+		$this->pass_nonce();
 
 		$_POST['id']     = 1;
 		$_POST['status'] = 'done';
@@ -33,23 +33,30 @@ final class TodoChangeStatusTest extends TestCase {
 		WP_Mock::passthruFunction( 'wp_unslash' );
 		WP_Mock::passthruFunction( 'sanitize_text_field' );
 
-		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn( [
-			1 => [
-				'text'   => 'Test1',
-				'status' => 'actual',
-			],
-		] )->once();
+		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn(
+			[
+				1 => [
+					'text'   => 'Test1',
+					'status' => 'actual',
+				],
+			]
+		)->once();
 
-		WP_Mock::userFunction( 'update_option' )->with( $todo->get_option_name(), [
-			1 => [
-				'text'   => 'Test1',
-				'status' => 'done',
-			],
-		] )->andReturn( true )->once();
+		WP_Mock::userFunction( 'update_option' )->with(
+			$todo->get_option_name(),
+			[
+				1 => [
+					'text'   => 'Test1',
+					'status' => 'done',
+				],
+			]
+		)->andReturn( true )->once();
 
-		WP_Mock::userFunction( 'wp_send_json_success' )->with( [
-			'updated' => true,
-		] )->once();
+		WP_Mock::userFunction( 'wp_send_json_success' )->with(
+			[
+				'updated' => true,
+			]
+		)->once();
 
 		$todo->change_status();
 	}
@@ -57,7 +64,7 @@ final class TodoChangeStatusTest extends TestCase {
 	public function test_change_status_no_id() {
 		$todo = new Todo();
 
-		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
+		$this->pass_nonce();
 
 		WP_Mock::userFunction( 'wp_send_json_error' )->with( 'Missing todo ID.', 400 )->once();
 
@@ -69,10 +76,13 @@ final class TodoChangeStatusTest extends TestCase {
 
 		$_POST['id'] = 1;
 
-		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
 
 		WP_Mock::userFunction( 'wp_send_json_error' )->with( 'Missing todo status.', 400 )->once();
 
 		$todo->change_status();
+	}
+
+	private function pass_nonce() {
+		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
 	}
 }

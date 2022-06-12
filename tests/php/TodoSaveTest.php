@@ -25,22 +25,31 @@ final class TodoSaveTest extends TestCase {
 	public function test_success_save() {
 		$todo = new Todo();
 
-		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
+		$this->pass_nonce();
 
 		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn( [] )->once();
 
-		WP_Mock::userFunction( 'update_option' )->with( $todo->get_option_name(), [
-			1 => [
-				'text'   => '',
-				'status' => 'actual',
-			],
-		] )->andReturn( true )->once();
+		WP_Mock::userFunction( 'update_option' )->with(
+			$todo->get_option_name(),
+			[
+				1 => [
+					'text'   => '',
+					'status' => 'actual',
+				],
+			]
+		)->andReturn( true )->once();
 
-		WP_Mock::userFunction( 'wp_send_json_success' )->with( [
-			'updated' => true,
-			'id'      => 1,
-		] )->once();
+		WP_Mock::userFunction( 'wp_send_json_success' )->with(
+			[
+				'updated' => true,
+				'id'      => 1,
+			]
+		)->once();
 
 		$todo->create();
+	}
+
+	private function pass_nonce() {
+		WP_Mock::userFunction( 'check_ajax_referer' )->with( 'wh_todo_nonce', 'todo_nonce' )->once();
 	}
 }
