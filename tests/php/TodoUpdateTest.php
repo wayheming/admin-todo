@@ -32,7 +32,7 @@ final class TodoUpdateTest extends TestCase {
 
 		$this->pass_sanitize();
 
-		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn(
+		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name(), [] )->andReturn(
 			[
 				1 => [
 					'text'   => 'Test1',
@@ -75,7 +75,7 @@ final class TodoUpdateTest extends TestCase {
 
 		$this->pass_sanitize();
 
-		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn(
+		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name(), [] )->andReturn(
 			[
 				1 => [
 					'text'   => 'Test1',

@@ -27,7 +27,7 @@ final class TodoSaveTest extends TestCase {
 
 		$this->pass_nonce();
 
-		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn( [] )->once();
+		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name(), [] )->andReturn( [] )->once();
 
 		WP_Mock::userFunction( 'update_option' )->with(
 			$todo->get_option_name(),

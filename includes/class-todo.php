@@ -40,7 +40,7 @@ class Todo {
 	public function create() {
 		check_ajax_referer( 'wh_todo_nonce', 'todo_nonce' );
 
-		$todo_data = get_option( $this->get_option_name() );
+		$todo_data = get_option( $this->get_option_name(), [] );
 
 		$id = array_key_last( $todo_data ) + 1;
 
@@ -72,7 +72,7 @@ class Todo {
 
 		$id = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 
-		$todo_data = get_option( $this->get_option_name() );
+		$todo_data = get_option( $this->get_option_name(), [] );
 
 		unset( $todo_data[ $id ] );
 
@@ -104,7 +104,7 @@ class Todo {
 
 		$id = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 
-		$todo_data = get_option( $this->get_option_name() );
+		$todo_data = get_option( $this->get_option_name(), [] );
 
 		$todo_data[ $id ]['text'] = $text;
 
@@ -136,7 +136,7 @@ class Todo {
 		$id     = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 		$status = sanitize_text_field( wp_unslash( $_POST['status'] ) );
 
-		$todo_data = get_option( $this->get_option_name() );
+		$todo_data = get_option( $this->get_option_name(), [] );
 
 		$todo_data[ $id ]['status'] = $status;
 

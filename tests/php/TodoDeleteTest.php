@@ -32,7 +32,7 @@ final class TodoDeleteTest extends TestCase {
 		WP_Mock::passthruFunction( 'wp_unslash' );
 		WP_Mock::passthruFunction( 'sanitize_text_field' );
 
-		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name() )->andReturn(
+		WP_Mock::userFunction( 'get_option' )->with( $todo->get_option_name(), [] )->andReturn(
 			[
 				1 => [
 					'text'   => 'Test1',
