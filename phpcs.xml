@@ -5,6 +5,7 @@
     <file>.</file>
     <!-- Ignoring Files and Folders -->
     <exclude-pattern>node_modules/*</exclude-pattern>
+    <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>\.github/*</exclude-pattern>
     <exclude-pattern>\.idea/*</exclude-pattern>
 
