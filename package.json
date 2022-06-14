@@ -6,7 +6,10 @@
 	"license": "MIT",
 	"dependencies": {},
 	"devDependencies": {
+		"@10up/cypress-wp-utils": "git+https://github.com/10up/cypress-wp-utils.git#build",
+		"@wordpress/env": "^4.8.0",
 		"@wordpress/eslint-plugin": "^12.4.0",
+		"cypress": "^10.1.0",
 		"eslint": "^8.17.0",
 		"gulp": "^4.0.2",
 		"gulp-minify": "^3.1.0",
@@ -20,6 +23,8 @@
 		"build": "gulp build",
 		"eslint": "eslint assets/js/scripts.js --fix",
 		"stylelint": "stylelint assets/sass/styles.scss --fix",
-		"cypress": "./node_modules/.bin/cypress open"
+		"cypress:open": "cypress open --config-file tests/cypress/config.config.js",
+		"cypress:run": "cypress run --config-file tests/cypress/config.config.js",
+		"wp-env": "./node_modules/.bin/wp-env"
 	}
 }
